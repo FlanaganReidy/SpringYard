@@ -2,7 +2,6 @@ package com.example.customer.service;
 
 import com.example.customer.model.Customer;
 import com.example.customer.repository.CustomerRepository;
-import com.example.customer.repository.CustomerRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,21 +23,21 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     @Transactional
-    public void add(Customer customer) {
-        customerRepository.add(customer);
+    public Customer add(Customer customer) {
+        return customerRepository.save(customer);
     }
 
 
     @Override
     public Customer getById(int id) {
-        return customerRepository.getById(id);
+        return customerRepository.findOne(id);
     }
 
     private final String SELECT_SQL = "SELECT * FROM customer";
 
     @Override
     public List<Customer> get() {
-        return customerRepository.get();
+        return customerRepository.findAll();
     }
 
 
@@ -46,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public void update(Customer customer) {
-        customerRepository.update(customer);
+        customerRepository.save(customer);
     }
 
     private final String DELETE_SQL = "DELETE FROM person WHERE id=?";
