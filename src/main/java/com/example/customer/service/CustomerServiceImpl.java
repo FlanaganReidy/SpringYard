@@ -7,52 +7,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Service
 public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    CustomerRepository customerRepository;
 
     private final String INSERT_SQL = "INSERT INTO customer (firstName, lastName) VALUES (?,?)";
 
     @Override
     @Transactional
     public void add(Customer customer) {
-        jdbcTemplate.update(INSERT_SQL, customer.getFirstName(), customer.getLastName());
+        customerRepository.add(customer);
     }
 
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM customer WHERE id = ?";
+
     @Override
     public Customer getById(int id) {
-        return jdbcTemplate.queryForObject(SELECT_BY_ID_SQL, new CustomerMapper(), id);
+        return customerRepository.getById(id);
     }
 
     private final String SELECT_SQL = "SELECT * FROM customer";
 
     @Override
     public List<Customer> get() {
-        return jdbcTemplate.query(SELECT_SQL, new CustomerMapper());
+        return customerRepository.get();
     }
 
-    private final String UPDATE_SQL = "UPDATE customer SET firstName=?, lastName=? where id=?";
+
 
     @Override
     @Transactional
     public void update(Customer customer) {
-        jdbcTemplate.update(UPDATE_SQL, customer.getFirstName(), customer.getLastName(), customer.getId());
+        customerRepository.update(customer);
     }
 
     private final String DELETE_SQL = "DELETE FROM person WHERE id=?";
     @Override
     @Transactional
     public void delete(int id) {
-        jdbcTemplate.update(DELETE_SQL, id);
+        customerRepository.delete(id);
     }
 
 
