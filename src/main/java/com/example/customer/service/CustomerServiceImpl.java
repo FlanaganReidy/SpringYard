@@ -19,7 +19,6 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     CustomerRepository customerRepository;
 
-    private final String INSERT_SQL = "INSERT INTO customer (firstName, lastName) VALUES (?,?)";
 
     @Override
     @Transactional
@@ -33,7 +32,6 @@ public class CustomerServiceImpl implements CustomerService{
         return customerRepository.findOne(id);
     }
 
-    private final String SELECT_SQL = "SELECT * FROM customer";
 
     @Override
     public List<Customer> get() {
@@ -48,7 +46,6 @@ public class CustomerServiceImpl implements CustomerService{
         customerRepository.save(customer);
     }
 
-    private final String DELETE_SQL = "DELETE FROM person WHERE id=?";
     @Override
     @Transactional
     public void delete(int id) {
